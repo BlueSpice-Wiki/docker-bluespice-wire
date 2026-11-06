@@ -15,6 +15,11 @@ WORKDIR /app
 
 COPY root-fs/* ./
 COPY --from=builder /tmp/wire ./wire
+
+# Build info: value of build arg BUILDINFO, `-` if not set
+ARG BUILDINFO
+RUN mkdir -p /image && echo "${BUILDINFO:--}" > /image/BUILDINFO
+
 USER 1003
 
 CMD ["/app/bin/entrypoint"]
