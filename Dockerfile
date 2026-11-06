@@ -15,6 +15,10 @@ WORKDIR /app
 
 COPY root-fs/* ./
 COPY --from=builder /tmp/wire ./wire
+
+# Build timestamp (UTC, YmdHis)
+RUN mkdir -p /image && date -u +%Y%m%d%H%M%S > /image/BUILDINFO
+
 USER 1003
 
 CMD ["/app/bin/entrypoint"]
