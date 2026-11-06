@@ -16,8 +16,9 @@ WORKDIR /app
 COPY root-fs/* ./
 COPY --from=builder /tmp/wire ./wire
 
-# Build timestamp (UTC, YmdHis)
-RUN mkdir -p /image && date -u +%Y%m%d%H%M%S > /image/BUILDINFO
+# Build info: value of build arg BUILDINFO, falls back to the UTC build timestamp (YmdHis)
+ARG BUILDINFO
+RUN mkdir -p /image && echo "${BUILDINFO:-$(date -u +%Y%m%d%H%M%S)}" > /image/BUILDINFO
 
 USER 1003
 
